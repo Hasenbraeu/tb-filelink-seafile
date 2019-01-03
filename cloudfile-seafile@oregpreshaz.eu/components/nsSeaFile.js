@@ -18,6 +18,7 @@ Cu.import("resource://gre/modules/XPCOMUtils.jsm");
 Cu.import("resource://gre/modules/Services.jsm");
 Cu.import("resource:///modules/gloda/log4moz.js");
 Cu.import("resource:///modules/cloudFileAccounts.js");
+Cu.importGlobalProperties(["XMLHttpRequest"]);
 
 var gServerUrl = "";
 var kAuthPath = "api2/auth-token/";
@@ -359,8 +360,8 @@ nsSeaFile.prototype = {
    */
   _createRepo: function nsSeafile_createRepo(repoName,successCallback,failureCallback) {
     this.log.debug("_createRepo("+repoName+")");
-    let req = Cc["@mozilla.org/xmlextras/xmlhttprequest;1"]
-                  .createInstance(Ci.nsIXMLHttpRequest);
+
+    let req = new XMLHttpRequest(Ci.nsIXMLHttpRequest);
     req.open("POST", gServerUrl + kRepoPath, false);
 
     req.onload = function() {
@@ -428,8 +429,7 @@ nsSeaFile.prototype = {
     if (this._repoId!="") return ;
     this.log.debug("_getRepoId: getting library id");
 
-      let req = Cc["@mozilla.org/xmlextras/xmlhttprequest;1"]
-                  .createInstance(Ci.nsIXMLHttpRequest);
+      let req = new XMLHttpRequest(Ci.nsIXMLHttpRequest);
       req.open("GET", gServerUrl + kRepoPath, false);
 
       req.onload = function() {
@@ -508,8 +508,7 @@ nsSeaFile.prototype = {
     }
     this.log.debug("_getUserInfo: getting user info");
 
-    let req = Cc["@mozilla.org/xmlextras/xmlhttprequest;1"]
-                .createInstance(Ci.nsIXMLHttpRequest);
+    let req = new XMLHttpRequest(Ci.nsIXMLHttpRequest);
     req.open("GET", gServerUrl + kUserInfoPath, true);
 
     req.onload = function() {
@@ -681,8 +680,7 @@ nsSeaFile.prototype = {
         throw Ci.nsIMsgCloudFileProvider.offlineErr;
     let args = "?p=" + pfolder;
 
-    let req = Cc["@mozilla.org/xmlextras/xmlhttprequest;1"]
-                  .createInstance(Ci.nsIXMLHttpRequest);
+    let req = new XMLHttpRequest(Ci.nsIXMLHttpRequest);
 
     req.open("GET", gServerUrl + kRepoPath + this._repoId + "/dir/" + args, true);
 
@@ -751,8 +749,7 @@ nsSeaFile.prototype = {
     this._getRepoId();
     let args = "?p=" + aParent+aName;
 
-    let req = Cc["@mozilla.org/xmlextras/xmlhttprequest;1"]
-                .createInstance(Ci.nsIXMLHttpRequest);
+    let req = new XMLHttpRequest(Ci.nsIXMLHttpRequest);
 
     req.open("POST",  gServerUrl + kRepoPath + this._repoId + "/dir/" + args, true);
 
@@ -851,8 +848,7 @@ nsSeaFile.prototype = {
       throw Cr.NS_ERROR_FAILURE;
     }
 
-    let req = Cc["@mozilla.org/xmlextras/xmlhttprequest;1"]
-                .createInstance(Ci.nsIXMLHttpRequest);
+    let req = new XMLHttpRequest(Ci.nsIXMLHttpRequest);
     this._getRepoId();
     let args = kRepoPath + this._repoId + "/file/?p="+this._folderName+"/"+
                aFile.leafName;
@@ -967,8 +963,7 @@ nsSeaFile.prototype = {
     if (this._password == undefined || !this._password)
       this._password = this.getPassword(this._userName, !aWithUI);
     this.log.debug("logon: Sending login information...");
-    let req = Cc["@mozilla.org/xmlextras/xmlhttprequest;1"]
-                .createInstance(Ci.nsIXMLHttpRequest);
+    let req = new XMLHttpRequest(Ci.nsIXMLHttpRequest);
     let curDate = Date.now().toString();
 
     req.open("POST", gServerUrl + kAuthPath, true);
@@ -1093,8 +1088,7 @@ nsSeaFileFileUploader.prototype = {
   _prepareToSend: function nsSFU__prepareToSend(successCallback,
                                                   failureCallback) {
   this.log.debug("_prepareToSend");
-    let req = Cc["@mozilla.org/xmlextras/xmlhttprequest;1"]
-                .createInstance(Ci.nsIXMLHttpRequest);
+    let req = new XMLHttpRequest(Ci.nsIXMLHttpRequest);
 
     req.open("GET", gServerUrl + kRepoPath + this._repoId+"/upload-link/", true);
 
@@ -1131,8 +1125,8 @@ nsSeaFileFileUploader.prototype = {
    * the upload of the file to SeaFile.
    */
   _uploadFile: function nsSFU__uploadFile() {
-    let req = Cc["@mozilla.org/xmlextras/xmlhttprequest;1"]
-                .createInstance(Ci.nsIXMLHttpRequest);
+
+    let req = new XMLHttpRequest(Ci.nsIXMLHttpRequest);
 
     this.log.debug("_uploadFile: "+this.file.leafName);
     let curDate = Date.now().toString();
@@ -1260,8 +1254,8 @@ nsSeaFileFileUploader.prototype = {
    */
   _getSharedLink: function nsSFU__getSharedLink() {
     this.log.debug("_getSharedLink("+this.file.leafName+"): get shared link");
-    let req = Cc["@mozilla.org/xmlextras/xmlhttprequest;1"]
-                .createInstance(Ci.nsIXMLHttpRequest);
+
+    let req = new XMLHttpRequest(Ci.nsIXMLHttpRequest);
 
     req.open("PUT", gServerUrl + kRepoPath + this._repoId+"/file/shared-link/", true);
 
