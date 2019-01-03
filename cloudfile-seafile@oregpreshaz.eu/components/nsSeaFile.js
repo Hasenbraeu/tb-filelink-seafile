@@ -34,14 +34,14 @@ nsSeaFile.prototype = {
 
   classID: Components.ID("{57c44a6d-2ffd-4554-8a57-a592f8361176}"),
 
-  get type() "SeaFile",
-  get displayName() "SeaFile",
-  get serviceURL() gServerUrl + " - " + this._repoName,
-  get iconClass() "chrome://cloudfile-seafile/skin/seafile_16.png",
-  get accountKey() this._accountKey,
-  get lastError() this._lastErrorText,
-  get settingsURL() "chrome://cloudfile-seafile/content/settings.xhtml",
-  get managementURL() "chrome://cloudfile-seafile/content/management.xhtml",
+  get type() { return  "SeaFile"; },
+  get displayName() { return "SeaFile"; },
+  get serviceURL() { return gServerUrl + " - " + this._repoName; },
+  get iconClass() { return "chrome://cloudfile-seafile/skin/seafile_16.png" },
+  get accountKey() { return this._accountKey; },
+  get lastError() { return this._lastErrorText; },
+  get settingsURL() { return "chrome://cloudfile-seafile/content/settings.xhtml"; },
+  get managementURL() { return "chrome://cloudfile-seafile/content/management.xhtml"; },
 
   _accountKey: false,
   _prefBranch: null,
@@ -819,16 +819,16 @@ nsSeaFile.prototype = {
    * there's a url we can load in a content tab that will allow the user
    * to create an account.
    */
-  get createNewAccountUrl() gServerUrl,
+  get createNewAccountUrl() { return gServerUrl; },
 
   /**
    * If we don't know the limit, this will return -1.
    */
-  get fileUploadSizeLimit() this._maxFileSize,
+  get fileUploadSizeLimit() { return this._maxFileSize; },
 
-  get remainingFileSpace() (this._availableStorage-this._fileSpaceUsed),
+  get remainingFileSpace() { return (this._availableStorage-this._fileSpaceUsed); },
 
-  get fileSpaceUsed() this._fileSpaceUsed,
+  get fileSpaceUsed() { return this._fileSpaceUsed; },
 
   /**
    * Attempts to delete an uploaded file.
@@ -912,7 +912,7 @@ nsSeaFile.prototype = {
 
     let passwordURI = gServerUrl;
     let logins = Services.logins.findLogins({}, passwordURI, null, passwordURI);
-    for each (let loginInfo in logins) {
+    for (let loginInfo in logins) {
       if (loginInfo.username == aUsername)
         return loginInfo.password;
     }
@@ -949,7 +949,7 @@ nsSeaFile.prototype = {
    */
   clearPassword: function nsSeaFile_clearPassword() {
     let logins = Services.logins.findLogins({}, gServerUrl, null, gServerUrl);
-    for each (let loginInfo in logins)
+    for (let loginInfo in logins)
       if (loginInfo.username == this._userName)
         Services.logins.removeLogin(loginInfo);
   },
